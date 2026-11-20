@@ -29,12 +29,12 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
-            steps {
-                bat 'docker rm -f flask-app %APP_NAME% 2>nul || exit 0'
-                bat 'docker run -d --name %APP_NAME% -p 5000:5000 %APP_NAME%'
-            }
-        }
+       stage('Deploy') {
+          steps {
+              bat 'docker rm -f flask-app %APP_NAME% 2>nul || exit 0'
+              bat 'docker run -d --name %APP_NAME% -p 5000:5000 -p 8000:8000 %APP_NAME%'
+          }
+      }
 
         stage('Security Test (OWASP ZAP)') {
             steps {

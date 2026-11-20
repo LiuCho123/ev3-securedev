@@ -35,5 +35,11 @@ pipeline {
                 bat 'docker run -d --name %APP_NAME% -p 5000:5000 %APP_NAME%'
             }
         }
+
+        stage('Security Test (OWASP ZAP)') {
+            steps {
+                bat 'docker run --rm -t ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://host.docker.internal:5000/hello?name=TEST || exit 0'
+            }
+        }
     }
 }

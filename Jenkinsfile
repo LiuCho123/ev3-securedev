@@ -18,6 +18,17 @@ pipeline {
             }
         }
 
+        stage('Security Review (SonarQube)') {
+            steps {
+                script {
+                    def scannerHome = tool 'SonarScanner'
+                    withSonarQubeEnv('SonarQube') {
+                        bat "\"${scannerHome}\\bin\\sonar-scanner.bat\" -Dsonar.projectKey=ev3-securedev -Dsonar.sources=."
+                    }
+                }
+            }
+        }
+
         stage('Deploy') {
             steps {
                 bat 'docker rm -f flask-app %APP_NAME% 2>nul || exit 0'
